@@ -47,8 +47,8 @@ class GameSession:
 		return None
 
 	async def add_player(self, player: Player) -> bool:
-		if self.state != "WAITING_FOR_PLAYERS":
-			await player.send("当前不可加入，游戏已开始或已结束")
+		if self.state not in ["WAITING_FOR_PLAYERS", "FINISHED"]:
+			await player.send("当前不可加入，游戏已开始")
 			return False
 		if self.get_player_by_name(player.name):
 			await player.send("玩家名已存在，请更换名称")
@@ -87,6 +87,23 @@ class GameSession:
 	async def end_game(self) -> None:
 		self.state = "FINISHED"
 		await self.broadcast("=== 游戏结束 ===")
+		# 重置游戏状态，允许新玩家加入
+		await self.reset_for_new_game()
+
+	async def reset_for_new_game(self) -> None:
+		"""重置游戏状态，准备新一局游戏"""
+		# 延迟重置，给玩家时间看到游戏结束消息
+		await asyncio.sleep(2)
+		self.state = "WAITING_FOR_PLAYERS"
+		self.bomb = None
+		self.min_range = 0
+		self.max_range = 200
+		self.current_index = 0
+		# 重置所有玩家的游戏状态
+		for player in self.players:
+			player.order_index = -1
+			player.current_guess = None
+		await self.broadcast("游戏已重置，可以开始新一局游戏！")
 
 	async def process_guess(self, player_name: str, guess: int) -> None:
 		if self.state != "PLAYING":

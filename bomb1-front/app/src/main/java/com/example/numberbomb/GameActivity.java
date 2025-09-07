@@ -176,6 +176,16 @@ public class GameActivity extends AppCompatActivity {
             isMyTurn = false;
             btnSendGuess.setEnabled(false);
             etGuess.setEnabled(false);
+        } else if (message.contains("游戏已重置")) {
+            // 游戏重置时恢复初始范围
+            minRange = 0;
+            maxRange = 200;
+            etGuess.setHint("范围: " + minRange + "-" + maxRange);
+        } else if (message.contains("炸弹数字已设置，范围: 0-200")) {
+            // 新游戏开始时重置范围
+            minRange = 0;
+            maxRange = 200;
+            etGuess.setHint("范围: " + minRange + "-" + maxRange);
         }
     }
 
