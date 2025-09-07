@@ -30,6 +30,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    sourceSets["main"].jniLibs.srcDir("lib/jni")
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -42,6 +43,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.core.ktx)
+    implementation(files("lib\\ZRDDSd.jar"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
