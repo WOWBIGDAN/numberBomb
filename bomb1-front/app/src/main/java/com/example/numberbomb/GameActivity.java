@@ -49,7 +49,7 @@ public class GameActivity extends AppCompatActivity {
         // 获取传递的参数
         playerName = getIntent().getStringExtra("player_name");
         serverIP = getIntent().getStringExtra("server_ip");
-        serverPort = getIntent().getIntExtra("server_port", 8888);
+        serverPort = getIntent().getIntExtra("server_port", 8889);
 
         initViews();
         setupListeners();
